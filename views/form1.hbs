@@ -1,0 +1,114 @@
+<form action="/projectOne/form1" method="post" enctype="multipart/form-data">
+
+    <!--    TODO: Add whatever header we create to this form as well as the footer-->
+
+
+    <div class="container-fluid">
+        <div class="text-center">
+            <h1>{{title}}</h1>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <!--First Name -->
+                <div class="mb-2">
+                    <label for="fName" class="form-label">First Name</label>
+                    <input type="text" class="form-control {{#if err.fName}}is-invalid{{/if}}"
+                           placeholder="Enter first Name"
+                           name="fName" id="fName" value="{{submittedFName}}" required>
+                    <div class="invalid-feedback">{{err.fName}}</div>
+                </div>
+
+                <!--Last Name-->
+                <div class="mb-2">
+                    <label for="lName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control {{#if err.lName}}is-invalid{{/if}}"
+                           placeholder="Enter Last Name"
+                           name="lName" id="lName" value="{{submittedLName}}" required>
+                    <div class="invalid-feedback">{{err.lName}}</div>
+
+                </div>
+
+                <!--Phone-->
+                <div class="mb-2">
+                    <label for="phone" class="form-label">Phone:</label>
+                    <input type="tel" class="form-control {{#if err.phone}}is-invalid{{/if}}"
+                           placeholder="Enter Phone number"
+                           name="phone" id="phone" value="{{submittedPhone}}" required>
+                    <div class="invalid-feedback">{{err.phone}}</div>
+                </div>
+
+                <!--Address-->
+                <div class="mb-2">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control {{#if err.address}}is-invalid{{/if}}"
+                           placeholder="Enter Street Address"
+                           name="address" id="address" value="{{submittedAddress}}" required>
+                    <div class="invalid-feedback">{{err.address}}</div>
+                </div>
+
+                <!--Province-->
+                <div class="mb-2">
+                    <label for="province" class="form-label">Province</label>
+                    <input type="text" class="form-control {{#if err.province}}is-invalid{{/if}}"
+                           placeholder="Enter Province"
+                           name="province" id="province" value="{{submittedProvince}}" required>
+                    <div class="invalid-feedback">{{err.province}}</div>
+                </div>
+
+                <!--City-->
+                <div class="mb-2">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control {{#if err.city}}is-invalid{{/if}}"
+                           placeholder="Enter City"
+                           name="city" id="city" value="{{submittedCity}}" required>
+                    <div class="invalid-feedback">{{err.city}}</div>
+                </div>
+
+                <!--Title1-->
+                <div class="mb-2">
+                    <label class="form-label" for="title1">File 1 Title:</label>
+                    <input type="text" class="form-control {{#if err.title1}}is-invalid{{/if}}"
+                           placeholder="Enter file title" name="title1" id="title1" required/>
+                    <div class="invalid-feedback">{{err.title1}}</div>
+                </div>
+
+                <!--File Upload-->
+                <div class="mb-2">
+                    <label for="file1" class="form-label">File Upload</label>
+                    <input type="file" class="form-control {{#if err.file1}}is-invalid{{/if}}"
+                           placeholder="Select File"
+                           name="file1" id="file1" required>
+                    <div class="invalid-feedback">{{err.file1}}</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-danger">Reset</button>
+
+
+            </div>
+
+            <!-- Shows the picture that the user submits -->
+            <div class="col-md-6">
+
+                {{#if isSubmitted}}
+
+                <div class="card p-2 m-3">
+                    {{#each carImage}}
+                        <img src="{{img}}" title="{{info}}"/>
+                    {{/each}}
+                {{/if}}
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+
+
