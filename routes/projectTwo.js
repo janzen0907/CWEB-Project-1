@@ -1,7 +1,7 @@
 /**
  * This file will contain the routes needed for our forms and our home page
  * @Authors John J, Adam G
- * path of http://localhost:3000/projectOne
+ * path of http://localhost:3000/projectTwo
  * home page has the path of http://localhost:3000
  * home page is using the index.js and index.hbs files
  */
