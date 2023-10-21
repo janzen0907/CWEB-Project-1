@@ -10,10 +10,17 @@
 
 // Needed packages for the project
 const express = require('express');
+const session = require('express-session');
 const router = express.Router();
 const fs = require('fs'); // file system
 const multer = require('multer');
 const {body, validationResult} = require('express-validator');
+
+// Passport variable
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const GoogleStrategy = require('passport-google-oidc');
+const passport = require('passport');
+
 
 // Multer object with destination for images
 const upload = multer( {
@@ -25,9 +32,22 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
   return msg; // only return the message
 };
 
+
+// router.get('/contest', passport.authenticate('google'));
+
+
 // Code for contest form
 // Path for http://localhost:3000/projectTwo/contest
-router.get('/contest', function(req, res, next) {
+router.get('/contest', passport.authenticate('google', {
+  scope: ['email'],
+  failureRedirect: 'http://localhost:3000/', // add error message
+  failureMessage: true,
+}),
+function(req, res) {
+  res.redirect('/contest');
+},
+
+function(req, res, next) {
   const violations = validationResult(req);
   const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
   console.log(errorMessages);
@@ -39,11 +59,19 @@ router.get('/contest', function(req, res, next) {
   });
 });
 
+/*
+router.get('/contest', passport.authenticate('google', {
+  failureRedirect: 'http://localhost:3000',
+  failureMessage: true}),
+function(req, res) {
+  res.redirect('http://localhost:3000/projectTwo/contest');
+});
+*/
 
 // Post for Car Contest
 router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
     [
-      // Validation for the form
+    // Validation for the form
       body('fName').trim().isAlpha().withMessage('First name must only contain letters'),
       body('lName').trim().isAlpha().withMessage('Last name must only contain letters'),
       body('phone').isMobilePhone('en-CA').withMessage('Must be a canadian phone number'),
@@ -53,7 +81,7 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
       body('title1').trim().if((value, {req})=> req.files.file1)
           .notEmpty().withMessage('Title is required when uploading a file'),
       body('file1').custom((value, {req}) => {
-        // if file exists and the mimetype is not an image than we will throw an error
+      // if file exists and the mimetype is not an image than we will throw an error
         if (req.files.file1 && !req.files.file1[0].mimetype.startsWith('image/')) {
           throw new Error('Car image must be an image file');
         }
@@ -65,7 +93,7 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
       }),
     ],
     function(req, res, next) {
-      // variable to hold the violations
+    // variable to hold the violations
       const violations = validationResult(req);
       const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
       const carImage = [];

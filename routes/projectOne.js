@@ -15,10 +15,11 @@ const fs = require('fs'); // file system
 const multer = require('multer');
 const {body, validationResult} = require('express-validator');
 // Brings the car data from the api into this file
-const carEngineData = require('../car.js');
+
 
 const make1 = require('express/lib/view');
 const make2 = require('express/lib/view');
+
 
 // Multer object with destination for images
 const upload = multer( {
@@ -29,6 +30,7 @@ const upload = multer( {
 const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
   return msg; // only return the message
 };
+
 
 // Code for first form
 // Path for http://localhost:3000/projectOne/form1
