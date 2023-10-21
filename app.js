@@ -32,8 +32,7 @@ passport.use(new GoogleStrategy({
 }));
 
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const indexRouter = require('./routes/home');
 // Project One route
 const projectOneRouter = require('./routes/projectOne');
 const projectTwoRouter = require('./routes/projectTwo');
@@ -58,7 +57,6 @@ app.use(passport.initialize({userProperty: 'authuser'}));
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 // Use our project one router
 app.use('/projectOne', projectOneRouter);
 app.use('/projectTwo', projectTwoRouter);

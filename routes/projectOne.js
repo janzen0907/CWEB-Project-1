@@ -3,7 +3,7 @@
  * @Authors John J, Adam G
  * path of http://localhost:3000/projectOne
  * home page has the path of http://localhost:3000
- * home page is using the index.js and index.hbs files
+ * home page is using the home.js and home.hbs files
  */
 
 // TODO: Remove unneeded files from this project before we submit
