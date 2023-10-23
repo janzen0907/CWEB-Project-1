@@ -34,12 +34,26 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
 
 
 // router.get('/contest', passport.authenticate('google'));
+/*
+router.get('/auth/google', passport.authenticate('google', {
+  scope: ['email'],
+  failureRedirect: 'http://localhost:3000/',
+}));
 
+router.get('/auth/google/callback',
+    passport.authenticate('google', {failureRedirect: 'http:/localhost:3000/'}),
+    function(req, res) {
+    // Successful authentication, redirect success.
+      res.redirect('/contest');
+    });
+*/
 
 // Code for contest form
 // Path for http://localhost:3000/projectTwo/contest
 router.get('/contest', passport.authenticate('google', {
   scope: ['email'],
+  // Testing stuff here
+  // successRedirect: '/contest',
   failureRedirect: 'http://localhost:3000/', // add error message
   failureMessage: true,
 }),
@@ -59,6 +73,18 @@ function(req, res, next) {
   });
 });
 
+router.get('/contestSession', (req, res, next) => {
+  const violations = validationResult(req);
+  const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
+  console.log(errorMessages);
+
+  // Render the form to the user with any error messages they may have
+  res.render('contestSession', {
+    title: 'Show Us Your Car',
+    err: errorMessages,
+  });
+});
+
 /*
 router.get('/contest', passport.authenticate('google', {
   failureRedirect: 'http://localhost:3000',
@@ -69,7 +95,8 @@ function(req, res) {
 */
 
 // Post for Car Contest
-router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
+// Change this back if we get passport working
+router.post('/contestSession', upload.fields([{name: 'file1', maxCount: 1}]),
     [
     // Validation for the form
       body('fName').trim().isAlpha().withMessage('First name must only contain letters'),

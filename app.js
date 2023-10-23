@@ -20,7 +20,8 @@ const sessionOptions = {
 passport.use(new GoogleStrategy({
   clientID: '258639327-k0f2v19bcplg61nqu1cbkiinbef7itcs.apps.googleusercontent.com',
   clientSecret: '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',
-  callbackURL: 'http://localhost:3000/projectTwo/contest/callback'},
+  callbackURL: 'http://localhost:3000/auth/google/callback',
+},
 // All we need is to check if the profile has an id and  if so return cb(null, profile)
 // Else cb with appropiate values
 (profile, cb) => {
