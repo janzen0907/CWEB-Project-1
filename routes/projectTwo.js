@@ -16,9 +16,6 @@ const fs = require('fs'); // file system
 const multer = require('multer');
 const {body, validationResult} = require('express-validator');
 
-// Passport variable
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const GoogleStrategy = require('passport-google-oidc');
 const passport = require('passport');
 
 
@@ -32,42 +29,23 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
   return msg; // only return the message
 };
 
-
-// router.get('/contest', passport.authenticate('google'));
-/*
-router.get('/auth/google', passport.authenticate('google', {
-  scope: ['email'],
-  failureRedirect: 'http://localhost:3000/',
-}));
-
-router.get('/auth/google/callback',
-    passport.authenticate('google', {failureRedirect: 'http:/localhost:3000/'}),
-    function(req, res) {
-    // Successful authentication, redirect success.
-      res.redirect('/contest');
-    });
-*/
-
-// Code for contest form
-// Path for http://localhost:3000/projectTwo/contest
 router.get('/contest', passport.authenticate('google', {
   scope: ['email'],
-  // Testing stuff here
-  // successRedirect: '/contest',
-  failureRedirect: 'http://localhost:3000/', // add error message
-  failureMessage: true,
-}),
-function(req, res) {
-  res.redirect('/contest');
-},
+}));
 
-function(req, res, next) {
+router.get('/oauth2/redirect',
+    passport.authenticate('google', {
+      successRedirect: '/projectTwo/contest',
+      failureRedirect: '/localhost:3000',
+    }));
+
+router.get('/contest', (req, res, next) => {
   const violations = validationResult(req);
   const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
   console.log(errorMessages);
 
   // Render the form to the user with any error messages they may have
-  res.render('contest', {
+  res.render('contestSession', {
     title: 'Show Us Your Car',
     err: errorMessages,
   });
@@ -84,15 +62,6 @@ router.get('/contestSession', (req, res, next) => {
     err: errorMessages,
   });
 });
-
-/*
-router.get('/contest', passport.authenticate('google', {
-  failureRedirect: 'http://localhost:3000',
-  failureMessage: true}),
-function(req, res) {
-  res.redirect('http://localhost:3000/projectTwo/contest');
-});
-*/
 
 // Post for Car Contest
 // Change this back if we get passport working

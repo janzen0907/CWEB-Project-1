@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
-const GoogleStrategy = require('passport-google-oidc');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const app = express();
 
 const sessionOptions = {
   secret: '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', // must be the same for cookieparser
@@ -13,24 +14,36 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
   cookie: {httpOnly: false, maxAge: 5184000000},
-  unset: 'destroy',
 };
+
+app.use(session(sessionOptions));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Code for passport
 passport.use(new GoogleStrategy({
   clientID: '258639327-k0f2v19bcplg61nqu1cbkiinbef7itcs.apps.googleusercontent.com',
   clientSecret: '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',
-  callbackURL: 'http://localhost:3000/auth/google/callback',
+  callbackURL: 'http://localhost:3000/projectTwo/contest',
 },
 // All we need is to check if the profile has an id and  if so return cb(null, profile)
 // Else cb with appropiate values
-(profile, cb) => {
+(accessToken, refreshToken, profile, done) => {
   if (profile.id != null) {
-    return cb(null, profile);
+    return done(null, profile);
   } else {
-    return cb(null, false);
+    return done(null, false);
   }
 }));
+
+// Serialize and deserialize the user
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 
 const indexRouter = require('./routes/home');
@@ -38,7 +51,6 @@ const indexRouter = require('./routes/home');
 const projectOneRouter = require('./routes/projectOne');
 const projectTwoRouter = require('./routes/projectTwo');
 
-const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -49,12 +61,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser(sessionOptions.secret));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: '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',
-  resave: false,
-  saveUninitialized: true,
-}));
-app.use(passport.initialize({userProperty: 'authuser'}));
 
 
 app.use('/', indexRouter);
