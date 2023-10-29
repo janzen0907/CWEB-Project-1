@@ -20,27 +20,27 @@ app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Code for passport
+// Setup Passport to use Google OAuth 2.0
 passport.use(new GoogleStrategy({
   clientID: '258639327-k0f2v19bcplg61nqu1cbkiinbef7itcs.apps.googleusercontent.com',
   clientSecret: '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',
-  callbackURL: 'http://localhost:3000/projectTwo/contest',
+  callbackURL: 'http://localhost:3000/projectTwo/contest', // Redirect URL after Google login
 },
-// All we need is to check if the profile has an id and  if so return cb(null, profile)
-// Else cb with appropiate values
+// Callback function for handling user authentication
 (accessToken, refreshToken, profile, done) => {
+  // Check if the user profile has a valid ID
   if (profile.id != null) {
-    return done(null, profile);
+    return done(null, profile); // Return authenticated user profile
   } else {
-    return done(null, false);
+    return done(null, false); // Return false indicating authenticating faiulure
   }
 }));
 
-// Serialize and deserialize the user
+// Serialize the user object so we can store it in the session
 passport.serializeUser((user, done) => {
   done(null, user);
 });
-
+// Deserialize the user from the session
 passport.deserializeUser((user, done) => {
   done(null, user);
 });

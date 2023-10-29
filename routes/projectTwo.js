@@ -15,7 +15,6 @@ const router = express.Router();
 const fs = require('fs'); // file system
 const multer = require('multer');
 const {body, validationResult} = require('express-validator');
-
 const passport = require('passport');
 
 
@@ -29,10 +28,12 @@ const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
   return msg; // only return the message
 };
 
+// Route to start the Google OAuth2 authentication
 router.get('/contest', passport.authenticate('google', {
   scope: ['email'],
 }));
 
+// Handle the redirect after the user has authenticated
 router.get('/oauth2/redirect',
     passport.authenticate('google', {
       successRedirect: '/projectTwo/contest',
@@ -44,17 +45,6 @@ router.get('/contest', (req, res, next) => {
   const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
   console.log(errorMessages);
 
-  // Render the form to the user with any error messages they may have
-  res.render('contestSession', {
-    title: 'Show Us Your Car',
-    err: errorMessages,
-  });
-});
-
-router.get('/contestSession', (req, res, next) => {
-  const violations = validationResult(req);
-  const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
-  console.log(errorMessages);
 
   // Render the form to the user with any error messages they may have
   res.render('contestSession', {
@@ -64,8 +54,7 @@ router.get('/contestSession', (req, res, next) => {
 });
 
 // Post for Car Contest
-// Change this back if we get passport working
-router.post('/contestSession', upload.fields([{name: 'file1', maxCount: 1}]),
+router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
     [
     // Validation for the form
       body('fName').trim().isAlpha().withMessage('First name must only contain letters'),
