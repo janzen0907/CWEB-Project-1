@@ -94,12 +94,20 @@
 
                 {{#if isSubmitted}}
 
-                <div class="card p-2 m-3">
-                    {{#each carImage}}
-                        <img src="{{img}}" title="{{info}}"/>
-                    {{/each}}
+                    <div class="card p-2 m-3">
+                        {{#each carImage}}
+                            <img src="{{img}}" title="{{info}}"/>
+                        {{/each}}
+                    </div>
+                    <div class="card p-2 m-3">
+                        <pre>Current Session ID: {{sessionID}}</pre>
+                        {{#each listOfSession}}
+                            <p>Session Values</p>
+                            <pre>{{@key}}: Address : {{this.address}} Province: {{this.province}}</pre>
+                        {{/each}}
+                    </div>
                 {{/if}}
-            </div>
+
 
             </div>
         </div>

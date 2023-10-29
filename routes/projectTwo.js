@@ -17,6 +17,7 @@ const multer = require('multer');
 const {body, validationResult} = require('express-validator');
 const passport = require('passport');
 
+const sessionHolder = [{}];
 
 // Multer object with destination for images
 const upload = multer({
@@ -27,6 +28,7 @@ const upload = multer({
 const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
   return msg; // only return the message
 };
+
 
 // Route to start the Google OAuth2 authentication
 router.get('/contest', passport.authenticate('google', {
@@ -54,6 +56,8 @@ router.get('/contest', (req, res, next) => {
     // fill in the fName and lName fields using cookies
     submittedFName: req.cookies.fName,
     submittedLName: req.cookies.lName,
+    sessionID: req.sessionID,
+    activeSession: JSON.stringify(req.session, null, 4),
   });
 });
 
@@ -88,6 +92,38 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
       const carImage = [];
       // log the error messages, more for testing
       console.log(errorMessages);
+      // declare a callback frunction fro the session activities
+      const callback = (err)=> {
+        if (err) throw err;
+      };
+      // find the purpose of the pose
+      switch (req.body.purpose) {
+        case 'regenerate':
+          // call regen when the user logs in to get new session ID
+          req.session.regenerate(callback);
+          break;
+        case 'destroy':
+          req.session.destroy(callback);
+          break;
+        case 'reload':
+          req.session.reload(callback);
+          break;
+        default:
+          if (req.body.category && !(req.session.hasOwnProperty(req.body.category))) {
+            req.session[req.body.category] = {};
+          }
+
+          sessionHolder.push({address: req.body.address, province: req.body.province});
+
+          if (sessionHolder.length > 4) {
+            let startCounter = 0;
+            sessionHolder.splice(startCounter, 1);
+            startCounter++;
+            if (startCounter === 4) {
+              startCounter = 0;
+            }
+          }
+      }
 
       // Cookie options
       const cookieOptions = {
@@ -118,12 +154,13 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
         }
       }
       // show the image to the user
+
       res.render('contest', {
         title: 'You have successfully entered the contest',
         isSubmitted: true,
         carImage,
         err: errorMessages,
-        submittedFName: req.body.fName || fNameCookie,
+        submittedFName: req.body.fName,
         submittedLName: req.body.lName,
         submittedPhone: req.body.phone,
         submittedAddress: req.body.address,
@@ -131,6 +168,9 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
         submittedCity: req.body.city,
         activeCookies: req.cookies,
         postedValues: req.body,
+        sessionID: req.sessionID,
+        activeSession: JSON.stringify(req.session, null, 4),
+        listOfSession: sessionHolder,
       });
     });
 

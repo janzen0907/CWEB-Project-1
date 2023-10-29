@@ -17,7 +17,7 @@ const sessionOptions = {
 };
 
 app.use(session(sessionOptions));
-app.use(passport.initialize());
+app.use(passport.initialize({userProperty: 'currentUser'}));
 app.use(passport.session());
 
 // Setup Passport to use Google OAuth 2.0
