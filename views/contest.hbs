@@ -1,13 +1,8 @@
 <form action="/projectTwo/contest" method="post" enctype="multipart/form-data">
-
-    <!--    TODO: Add whatever header we create to this form as well as the footer-->
-
-
     <div class="container-fluid">
         <div class="text-center">
             <h1>{{title}}</h1>
         </div>
-
 
         <div class="row">
             <div class="col-md-6">
@@ -86,14 +81,11 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <button type="reset" class="btn btn-danger">Reset</button>
 
-
             </div>
 
             <!-- Shows the picture that the user submits -->
             <div class="col-md-6">
-
                 {{#if isSubmitted}}
-
                     <div class="card p-2 m-3">
                         {{#each carImage}}
                             <img src="{{img}}" title="{{info}}"/>
@@ -103,17 +95,14 @@
                         <pre>Current Session ID: {{sessionID}}</pre>
                         {{#each listOfSession}}
                             <p>Session Values</p>
-                            <pre>{{@key}}: Address : {{this.address}} Province: {{this.province}}</pre>
+                            <pre>Address : {{this.address}} </pre>
+                            <pre>Province: {{this.province}}</pre>
                         {{/each}}
                     </div>
                 {{/if}}
-
-
             </div>
         </div>
     </div>
-
-
 </form>
 
 

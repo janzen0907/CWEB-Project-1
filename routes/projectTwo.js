@@ -10,7 +10,6 @@
 
 // Needed packages for the project
 const express = require('express');
-const session = require('express-session');
 const router = express.Router();
 const fs = require('fs'); // file system
 const multer = require('multer');
@@ -92,7 +91,7 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
       const carImage = [];
       // log the error messages, more for testing
       console.log(errorMessages);
-      // declare a callback frunction fro the session activities
+      // declare a callback function from the session activities
       const callback = (err)=> {
         if (err) throw err;
       };
@@ -109,10 +108,6 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
           req.session.reload(callback);
           break;
         default:
-          if (req.body.category && !(req.session.hasOwnProperty(req.body.category))) {
-            req.session[req.body.category] = {};
-          }
-
           sessionHolder.push({address: req.body.address, province: req.body.province});
 
           if (sessionHolder.length > 4) {
@@ -153,8 +148,8 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
           }
         }
       }
-      // show the image to the user
 
+      // show the image and session values to the user
       res.render('contest', {
         title: 'You have successfully entered the contest',
         isSubmitted: true,

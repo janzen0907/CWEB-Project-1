@@ -1,9 +1,9 @@
-
 <h1 class="navbar">We Love Cars</h1>
 <h3 class="pt-3">Welcome to our Fun Cars Site!</h3>
 <p class="pt-3">I hope all you guys love cars just as much as we do.</p>
-<!--For now use thist-->
-<a href="/projectTwo/contest">Contest</a><br/>
+<!--UNCOMMENT THE BELOW CODE IF NAVBAR BREAKS ON HOME PAGE!!!!-->
+<!--<h5>NOTE: Our navbar is having some issues working on our home page. Use this link to enter the contest - It works on the contest page</h5>-->
+<!--<a href="/projectTwo/contest">CLick here to enter our contest!</a><br/>-->
 
 
 <div class="container col-md-12 pt-2">
@@ -35,7 +35,6 @@
                 <img src="homeImages/hawkeye%20sti.jpg" class="d-block w-100" alt="Subaru STI"/>
                 <h5>Subaru STI</h5>
             </div>
-
         </div>
 
         <!-- Left and right controls -->
@@ -50,8 +49,42 @@
     </div>
 
     <h2 class="mt-5 mb-3">Us car lovers obviously have to have some nice cars ourselves. Here they are:</h2>
-    <img src="homeImages/Adam_G35.jpg" alt="Adam's Car" class="d-block w-100" />
-    <h5 class="pt-2 pb-3">Adam's 2007 Infiniti G35 Coupe</h5>
+    <div id="adam" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#adam" data-bs-slide-to="0" class="active" aria-current="true"
+                    aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#adam" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#adam" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="homeImages/Adam_G35.jpg" class="d-block w-100"
+                     alt="G35"/>
+                <h5>2007 Infiniti G35</h5>
+            </div>
+            <div class="carousel-item text-center">
+                <video controls>
+                    <source src="homeImages/Mini%20Pull.mp4" type="video/mp4" class="d-block w-100" />
+                </video>
+                <h5 class="mb-5">Straight Pipe Exhaust</h5>
+            </div>
+            <div class="carousel-item text-center">
+                <img src="homeImages/RearEndG35.jpg" class="d-block w-50 m-auto" alt="BackEnd"/>
+                <h5 class="mb-5">Rear Pic</h5>
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#adam" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#adam" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
     <h6>Mods List:</h6>
     <ul>
         <li>Aftermarket R32 Mirrors</li>
@@ -82,18 +115,18 @@
             <button type="button" data-bs-target="#john" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <!-- The slideshow -->
-        <div class="carousel-inner">
+        <div class="carousel-inner mb-5">
             <div class="carousel-item active">
                 <img src="homeImages/silvia.jpg" class="d-block w-100"
-                     alt="Aston Martin Vantage"/>
+                     alt="Silvia"/>
                 <h5>1999 Nissan Silvia S15 Spec R</h5>
             </div>
             <div class="carousel-item">
-                <img src="homeImages/subiesnow.jpg" class="d-block w-100  " alt="Ferarri F40"/>
+                <img src="homeImages/subiesnow.jpg" class="d-block w-100  " alt="Subaru"/>
                 <h5>2015 Subaru STI</h5>
             </div>
             <div class="carousel-item">
-                <img src="homeImages/thetoys.jpg" class="d-block w-100" alt="R32"/>
+                <img src="homeImages/thetoys.jpg" class="d-block w-100" alt="toys"/>
                 <h5>2015 Subaru STI, 1999 Nissan Silvia, 2005 GSXR 600</h5>
             </div>
         </div>
@@ -108,12 +141,4 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
 </div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-        crossorigin="anonymous"></script>
-
-
