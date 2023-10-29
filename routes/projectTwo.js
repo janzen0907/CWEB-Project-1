@@ -19,7 +19,7 @@ const passport = require('passport');
 
 
 // Multer object with destination for images
-const upload = multer( {
+const upload = multer({
   dest: 'public/uploads/',
 });
 
@@ -51,6 +51,9 @@ router.get('/contest', (req, res, next) => {
     title: 'Show Us Your Car',
     err: errorMessages,
     activeCookies: req.cookies, // send the cookies to the server
+    // fill in the fName and lName fields using cookies
+    submittedFName: req.cookies.fName,
+    submittedLName: req.cookies.lName,
   });
 });
 
@@ -64,7 +67,7 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
       body('address').notEmpty().withMessage('Address cannot be left empty'),
       body('province').notEmpty().withMessage('Province cannot be left empty'),
       body('city').notEmpty().withMessage('City cannot be left empty'),
-      body('title1').trim().if((value, {req})=> req.files.file1)
+      body('title1').trim().if((value, {req}) => req.files.file1)
           .notEmpty().withMessage('Title is required when uploading a file'),
       body('file1').custom((value, {req}) => {
       // if file exists and the mimetype is not an image than we will throw an error
@@ -86,10 +89,24 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
       // log the error messages, more for testing
       console.log(errorMessages);
 
+      // Cookie options
+      const cookieOptions = {
+        path: req.baseUrl,
+        sameSite: 'lax',
+        httpOnly: req.body.hide && req.body.hide === 'yes',
+      };
+      // const for cookie max age
+      const maxAge = 5184000000;
+      cookieOptions.maxAge = maxAge;
+      // name the cookies something easy and get the value from the req.body. Set max age to 60 days
+      res.cookie('fName', req.body.fName, {maxAge: maxAge});
+      res.cookie('lName', req.body.lName, {maxAge: maxAge});
+
+
       // Name the file we got in and either move it or get rid of it
       for (const [field, fileArray] of Object.entries(req.files)) {
         for (const tempFile of fileArray) {
-          const tempNum = field.substring(field.length -1);
+          const tempNum = field.substring(field.length - 1);
           if (errorMessages['title1' + tempNum] || errorMessages['file1' + tempNum]) {
             fs.unlinkSync(tempFile.path);
           } else {
@@ -106,12 +123,14 @@ router.post('/contest', upload.fields([{name: 'file1', maxCount: 1}]),
         isSubmitted: true,
         carImage,
         err: errorMessages,
-        submittedFName: req.body.fName,
+        submittedFName: req.body.fName || fNameCookie,
         submittedLName: req.body.lName,
         submittedPhone: req.body.phone,
         submittedAddress: req.body.address,
         submittedProvince: req.body.province,
         submittedCity: req.body.city,
+        activeCookies: req.cookies,
+        postedValues: req.body,
       });
     });
 
