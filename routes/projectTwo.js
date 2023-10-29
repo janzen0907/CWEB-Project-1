@@ -47,9 +47,10 @@ router.get('/contest', (req, res, next) => {
 
 
   // Render the form to the user with any error messages they may have
-  res.render('contestSession', {
+  res.render('contest', {
     title: 'Show Us Your Car',
     err: errorMessages,
+    activeCookies: req.cookies, // send the cookies to the server
   });
 });
 
